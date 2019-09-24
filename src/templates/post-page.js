@@ -9,6 +9,7 @@ export default function Template({ data }) {
       <header>
         <h1 className="font-bold text-3xl mb-2">{frontmatter.title}</h1>
         <p className="block mb-5">{frontmatter.date}</p>
+        <div>{frontmatter.author}</div>
       </header>
       <section
         className="markdown"
@@ -25,6 +26,7 @@ export const pageQuery = graphql`
       frontmatter {
         date(formatString: "MMMM DD, YYYY")
         title
+        author
       }
     }
   }
