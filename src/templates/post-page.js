@@ -24,9 +24,9 @@ export const pageQuery = graphql`
     markdownRemark(id: { eq: $id }) {
       html
       frontmatter {
-        date(formatString: "MMMM DD, YYYY")
-        title
-        author
+        image
+        name
+        price
       }
     }
   }

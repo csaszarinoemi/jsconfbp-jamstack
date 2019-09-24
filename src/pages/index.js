@@ -6,24 +6,24 @@ const products = [
   { slug: 'product-name-2', price: 79.99, name: 'Product Name 2' },
 ]
 
-const IndexPage = () => (
+const IndexPage = (props) => (
   <div className="product-list">
-    {products.map(({ slug, name, price }) => (
+    {props.data.allMarkdownRemark.edges.map((edge) => (
       <Link
-        key={slug}
+        key={edge.node.fields.slug}
         className="block rounded-lg overflow-hidden shadow-lg hover:shadow-xl"
-        to={slug}
+        to={edge.node.fields.slug}
       >
         <div className="relative pb-full">
           <img
-            src="https://source.unsplash.com/random/800x600"
-            alt={name}
+            src={edge.node.frontmatter.image}
+            alt={edge.node.frontmatter.name}
             className="absolute h-full w-full object-cover"
           />
         </div>
         <div className="bg-white p-4">
-          <div className="font-bold text-2xl text-gray-900">{name}</div>
-          <div className="font-semibold text-l text-gray-700">€{price}</div>
+          <div className="font-bold text-2xl text-gray-900">{edge.node.frontmatter.name}</div>
+          <div className="font-semibold text-l text-gray-700">€{edge.node.frontmatter.price}</div>
         </div>
       </Link>
     ))}
@@ -31,3 +31,33 @@ const IndexPage = () => (
 )
 
 export default IndexPage
+
+export const pageQuery = graphql`
+  query {
+    allMarkdownRemark(filter: {frontmatter: {templateKey: {eq: "product-page"}}}) {
+      edges {
+        node {
+          frontmatter {
+            image
+            name
+            price
+          }
+          fields {
+            slug
+          }
+        }
+      }
+      nodes {
+        frontmatter {
+          title
+          templateKey
+          name
+          image
+          price
+          date
+          author
+        }
+      }
+    }
+  }
+  `
